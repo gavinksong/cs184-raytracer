@@ -12,6 +12,7 @@ class Camera {
 
     Camera (int width, int height);
     Ray generateRay (const Sample&) const;
+    void autoResize (void);
 };
 
 #endif

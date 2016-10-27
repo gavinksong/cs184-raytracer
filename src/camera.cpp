@@ -1,3 +1,4 @@
+#include <cmath>
 #include <limits>
 #include "camera.h"
 
@@ -5,10 +6,7 @@ Camera::Camera (int width, int height) {
   this->width = width;
   this->height = height;
   this->eye.assign (0, 0, 0);
-  this->UL.assign (-100./height,  100./width, -1);
-  this->UR.assign ( 100./height,  100./width, -1);
-  this->LR.assign ( 100./height, -100./width, -1);
-  this->LL.assign (-100./height, -100./width, -1);
+  this->autoResize ();
 };
 
 Ray Camera::generateRay (const Sample& sample) const {
@@ -20,4 +18,14 @@ Ray Camera::generateRay (const Sample& sample) const {
           + y * ((1-x) * this->LL + x * this->LR) - ray.src;
   ray.tmax = std::numeric_limits<float>::infinity ();
   return ray;
+};
+
+void Camera::autoResize (void) {
+  float width = this->width;
+  float height = this->height;
+  float size = sqrt (width*width + height*height);
+  this->UL.assign (-width,  height, -size);
+  this->UR.assign ( width,  height, -size);
+  this->LR.assign ( width, -height, -size);
+  this->LL.assign (-width, -height, -size);
 };

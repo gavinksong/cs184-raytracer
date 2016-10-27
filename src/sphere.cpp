@@ -1,5 +1,4 @@
 #include <cmath>
-#include <iostream>
 #include "sphere.h"
 
 Sphere::Sphere (float x, float y, float z, float r) {
@@ -22,7 +21,7 @@ bool Sphere::intersect (const Ray& ray, float& thit, LocalGeo& out) const {
   float det = b*b - 4*a*c;
 
   if (det < 0) return false;
-  float t = -(b + sqrt(det)) / 2*a;
+  float t = -(b + sqrt(det)) / (2*a);
   if (t <= 0 || t > ray.tmax) return false;
 
   Vec3 v = src + t * dir;

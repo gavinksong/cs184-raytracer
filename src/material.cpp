@@ -15,6 +15,7 @@ Vec3 Material::brdf (const Vec3& view, const Vec3& light, const Vec3& normal) co
   Vec3 pu = cross (pv, n);
 
   float p = this->spu * sqr (h * pu) + this->spv * sqr (h * pv);
+
   return this->ka
        + this->kd * fmaxf (n * l, 0)
        + this->ks * pow (fmaxf (r * v, 0), p);

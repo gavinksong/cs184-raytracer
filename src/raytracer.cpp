@@ -1,4 +1,3 @@
-#include <iostream>
 #include "material.h"
 #include "localgeo.h"
 #include "raytracer.h"

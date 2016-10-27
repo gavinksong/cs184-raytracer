@@ -12,6 +12,7 @@ class Scene {
     Camera* camera;
     RayTracer raytracer;
   public:
+    int recursiveDepth = 3;
     Scene (Camera* camera);
     Film render (void);
     void addPrimitive (Primitive*);

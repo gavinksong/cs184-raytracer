@@ -8,7 +8,8 @@ void Vec3::assign (float x, float y, float z) {
 };
 
 Vec3 Vec3::reflect (const Vec3& v) const {
-  return -v + 2 * (v * (*this)) * (*this);
+  Vec3 n = normalize (*this);
+  return -v + 2 * (v * n) * n;  
 };
 
 Vec3 Vec3::operator + (const Vec3& param) const {

@@ -76,11 +76,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
             if (action) translation[1] -= 0.01f * camera.height; break;
         case GLFW_KEY_F:
             if (action) auto_strech = !auto_strech; break;
-        case GLFW_KEY_SPACE: break;
-            
         default: break;
     }
-    
 }
 
 //****************************************************
@@ -138,6 +135,7 @@ void size_callback(GLFWwindow* window, int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, camera.width, 0, camera.height, 1, -1);
+    camera.autoResize ();
     
     display(window);
 }
@@ -181,15 +179,40 @@ int main(int argc, char *argv[]) {
     glfwSetKeyCallback(window, key_callback);
 
     // Set up the scene
-    Sphere sphere (0, 0, -5, 1);
-    sphere.material.ka.assign (.1, 0, 0);
-    sphere.material.kd.assign (1, 0, 0);
-    scene.addPrimitive (&sphere);
+    Sphere sphere1 (0, 0, -5, 2);
+    sphere1.material.ka.assign (.1, .1, .1);
+    sphere1.material.kd.assign (.5, .5, .5);
+    sphere1.material.ks.assign (.5, .5, .5);
+    sphere1.material.kr = 0.5;
+    sphere1.material.spu = 500;
+    sphere1.material.spv = 500;
+    scene.addPrimitive (&sphere1);
 
-    DirectionalLight light;
-    light.xyz.assign (-1, -1, -1);
-    light.rgb.assign (1, 1, 1);
-    scene.addLight (&light);
+    Sphere sphere2 (-1, -1, -3, .5);
+    sphere2.material.ka.assign (0, .1, 0);
+    sphere2.material.kd.assign (.3, .6, .3);
+    sphere2.material.ks.assign (.8, .8, .8);
+    sphere2.material.spu = 500;
+    sphere2.material.spv = 500;
+    scene.addPrimitive (&sphere2);
+
+    Sphere sphere3 (1, -1, -2, .3);
+    sphere3.material.ka.assign (0, 0, .1);
+    sphere3.material.kd.assign (.3, .3, .6);
+    sphere3.material.ks.assign (.3, .3, .6);
+    sphere3.material.spu = 500;
+    sphere3.material.spv = 500;
+    scene.addPrimitive (&sphere3);
+
+    DirectionalLight light1;
+    light1.xyz.assign (1, 1, -1);
+    light1.rgb.assign (1, 1, 1);
+    scene.addLight (&light1);
+
+    PointLight light2;
+    light2.xyz.assign (1, 1, 0);
+    light2.rgb.assign (1, .2, .5);
+    scene.addLight (&light2);
     
     while( !glfwWindowShouldClose( window ) ) // infinite loop to draw object again and again
     {   // because once object is draw then window is terminated

@@ -13,7 +13,7 @@ Film Scene::render (void) {
 
   while (sampler.generateSample (sample)) {
     Ray ray = camera.generateRay (sample);
-    Vec3 color = this->raytracer.trace (ray, 1);
+    Vec3 color = this->raytracer.trace (ray, recursiveDepth);
     film.commit (sample, color);
   }
 

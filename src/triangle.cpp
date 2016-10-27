@@ -29,9 +29,3 @@ bool Triangle::intersect (const Ray& ray, float& thit, LocalGeo& out) const {
   thit = t;
   return true;
 };
-
-void Triangle::debug (void) const {
-  cerr << "A: " << this->a << "\n";
-  cerr << "B: " << this->b << "\n";
-  cerr << "C: " << this->c << "\n";
-};
