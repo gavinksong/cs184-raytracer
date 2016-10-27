@@ -1,4 +1,4 @@
- # Original file Copyright CMU462 Fall 2015: 
+  # Original file Copyright CMU462 Fall 2015: 
 # Kayvon Fatahalian, Keenan Crane,
 # Sky Gao, Bryce Summers, Michael Choquette.
 cmake_minimum_required(VERSION 2.8)
@@ -26,6 +26,7 @@ set(APPLICATION_SOURCE
 include_directories(
   ${GLEW_INCLUDE_DIRS}
   ${GLFW_INCLUDE_DIRS}
+  ${JPEG_INCLUDE_DIRS}
 #  ${FREETYPE_INCLUDE_DIRS}
 )
 
@@ -35,6 +36,7 @@ include_directories(
 link_directories(
   ${GLEW_LIBRARY_DIRS}
   ${GLFW_LIBRARY_DIRS}
+  ${JPEG_LIBRARY_DIRS}
 #  ${CGL_LIBRARY_DIRS}
 #  ${FREETYPE_LIBRARY_DIRS}
 )
@@ -47,6 +49,7 @@ add_executable(as2 ${APPLICATION_SOURCE})
 target_link_libraries( as2
     glew ${GLEW_LIBRARIES}
     glfw ${GLFW_LIBRARIES}
+    jpeg ${JPEG_LIBRARIES}
     ${OPENGL_LIBRARIES}
 #    ${FREETYPE_LIBRARIES}
     ${CMAKE_THREADS_INIT}

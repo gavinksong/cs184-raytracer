@@ -131,6 +131,10 @@ add_subdirectory(glew)
 include_directories(glew/include)
 # set_property( TARGET glew APPEND_STRING PROPERTY COMPILE_FLAGS -w )
 
+# libjpeg
+add_subdirectory(libjpeg)
+include_directories(libjpeg)
+
 #-------------------------------------------------------------------------------
 # Add subdirectories
 #-------------------------------------------------------------------------------
