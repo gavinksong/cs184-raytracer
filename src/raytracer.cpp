@@ -38,9 +38,13 @@ Vec3 RayTracer::trace (Ray ray, int depth) {
          it++) {
       Light* light = *it;
       Ray lray = light->generateLightRay (local);
+
+      // Add bias to avoid self-shadowing
+      Ray sray = lray;
+      sray.src += local.normal * .00001;
       
       // Shade if light is not blocked
-      if (!this->intersectP (lray)) {
+      if (!this->intersectP (sray)) {
         Vec3 shading = mat->brdf (-ray.dir, lray.dir, local.normal);
         color += hadamard (light->rgb, shading);
       }
