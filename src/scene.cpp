@@ -1,6 +1,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "material.h"
 #include "scene.h"
 #include "sample.h"
 #include "triangle.h"
@@ -50,11 +51,13 @@ void Scene::readFile (const char* filename) {
           stof (tokens[2]),
           stof (tokens[3])));
       } else if (tokens[0] == "f") {
-        this->raytracer.addPrimitive (new Triangle (
+        // TODO: memory leak :))))
+        Triangle* t = new Triangle (
           points[stoi (tokens[1])],
           points[stoi (tokens[2])],
-          points[stoi (tokens[3])])
-        );
+          points[stoi (tokens[3])]);
+        t->material = Material::matte ();
+        this->raytracer.addPrimitive (t);
       }
     }
     file.close();
