@@ -53,7 +53,7 @@ Vec3 RayTracer::trace (Ray ray, int depth) {
     // Handle mirror reflection
     if (mat->kr > 0) {
       Ray reflectRay;
-      reflectRay.src = local.pos;
+      reflectRay.src = local.pos + local.normal * .00001;
       reflectRay.dir = local.normal.reflect (-ray.dir);
       reflectRay.tmax = std::numeric_limits<float>::infinity ();
 
