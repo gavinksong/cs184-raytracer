@@ -53,9 +53,9 @@ void Scene::readFile (const char* filename) {
       } else if (tokens[0] == "f") {
         // TODO: memory leak :))))
         Triangle* t = new Triangle (
-          points[stoi (tokens[1])],
-          points[stoi (tokens[2])],
-          points[stoi (tokens[3])]);
+          points[stoi (tokens[1]) - 1],
+          points[stoi (tokens[2]) - 1],
+          points[stoi (tokens[3]) - 1]);
         t->material = Material::matte ();
         this->raytracer.addPrimitive (t);
       }
@@ -73,7 +73,7 @@ vector<string> split (const string& s, const string& delims) {
       tokens.push_back (s.substr (pos));
     else
       tokens.push_back (s.substr (pos, end - pos));
-    pos = end + 1;
+    pos = s.find_first_not_of (delims, end);
   }
   return tokens;
 }
