@@ -1,5 +1,13 @@
+#include <fstream>
+#include <string>
+#include <vector>
 #include "scene.h"
 #include "sample.h"
+#include "triangle.h"
+
+using namespace std;
+
+vector<string> split (const string& s, const string& delims);
 
 Scene::Scene (Camera* camera) {
   this->camera = camera;
@@ -27,3 +35,42 @@ void Scene::addPrimitive (Primitive* primitive) {
 void Scene::addLight (Light* light) {
   this->raytracer.addLight (light);
 };
+
+void Scene::readFile (const char* filename) {
+  ifstream file (filename);
+  string delims (" \t");
+  string line;
+  vector<Vec3> points;
+  if (file.is_open ()) {
+    while (getline (file, line)) {
+      vector<string> tokens = split (line, delims);
+      if (tokens[0] == "v") {
+        points.push_back (Vec3 (
+          stof (tokens[1]),
+          stof (tokens[2]),
+          stof (tokens[3])));
+      } else if (tokens[0] == "f") {
+        this->raytracer.addPrimitive (new Triangle (
+          points[stoi (tokens[1])],
+          points[stoi (tokens[2])],
+          points[stoi (tokens[3])])
+        );
+      }
+    }
+    file.close();
+  }
+};
+
+vector<string> split (const string& s, const string& delims) {
+  vector<string> tokens;
+  size_t pos = s.find_first_not_of (delims);
+  while (pos != string::npos) {
+    size_t end = s.find_first_of (delims, pos);
+    if (end == string::npos)
+      tokens.push_back (s.substr (pos));
+    else
+      tokens.push_back (s.substr (pos, end - pos));
+    pos = end + 1;
+  }
+  return tokens;
+}

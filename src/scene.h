@@ -17,6 +17,7 @@ class Scene {
     Film render (void);
     void addPrimitive (Primitive*);
     void addLight (Light*);
+    void readFile (const char *);
 };
 
 #endif
