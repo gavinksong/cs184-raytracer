@@ -3,6 +3,15 @@
 
 inline float sqr (float x) { return x*x; };
 
+Material Material::matte (void) {
+  Material matte;
+  matte.ka = Vec3 (0, 0, 0);
+  matte.kd = Vec3 (.5, .5, .5);
+  matte.ks = Vec3 (0, 0, 0);
+  matte.kr = 0;
+  return matte;
+};
+
 Vec3 Material::brdf (const Vec3& view, const Vec3& light, const Vec3& normal) const {
   Vec3 v = normalize (view);
   Vec3 l = normalize (light);
