@@ -10,7 +10,7 @@ void Triangle::transform (const Transform& t) {
 bool Triangle::intersect (const Ray& ray, float& thit, LocalGeo& out) const {
   Vec3 ab = this->b - this->a;
   Vec3 ac = this->c - this->a;
-  Vec3 diff = this->a - ray.pos;
+  Vec3 diff = this->a - ray.src;
 
   Vec3 normal = normalize (cross (ab, ac));
   float t = (diff * normal) / (ray.dir * normal);

@@ -5,19 +5,19 @@ cmake_minimum_required(VERSION 2.8)
 
 # Application source
 set(APPLICATION_SOURCE
-    
-    main.cpp
-    camera.cpp
-    film.cpp
-    light.cpp
-    primitive.cpp
-    raytracer.cpp
-    material.cpp
-    sampler.cpp
-    scene.cpp
-    sphere.cpp
-    transform.cpp
-    vec3.cpp
+  camera.cpp
+  film.cpp
+  light.cpp
+  main.cpp
+  material.cpp
+  primitive.cpp
+  raytracer.cpp
+  sampler.cpp
+  scene.cpp
+  sphere.cpp
+  transform.cpp
+  triangle.cpp
+  vec3.cpp
 )
 
 #-------------------------------------------------------------------------------

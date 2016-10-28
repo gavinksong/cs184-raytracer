@@ -7,12 +7,12 @@
 
 class Triangle: public Primitive {
   protected:
-    Vec3* a, b, c;
+    Vec3 a, b, c;
   public:
     Triangle () {};
-    Triangle (const Vec3& a, const Vec3& b, const Vec3& c) : a(a), b(b), c(c) {};
+    Triangle (Vec3& a, Vec3& b, Vec3& c) : a(a), b(b), c(c) {};
+    bool intersect (const Ray&, float&, LocalGeo&) const;
     void transform (const Transform&);
-    bool intersect (const Ray& ray, float& thit, LocalGeo& out) const;
 };
 
 #endif
