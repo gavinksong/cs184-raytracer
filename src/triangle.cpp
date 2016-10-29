@@ -18,13 +18,14 @@ bool Triangle::intersect (const Ray& ray, float& thit, LocalGeo& out) const {
   if (t <= 0 || t > ray.tmax)
     return false;
 
-  Vec3 ax = ray.dir * t - diff;
-  float beta = (ax * ab) / (ab * ab);
-  float gamma = (ax * ac) / (ac * ac);
-  if (beta < 0 || gamma < 0 || beta + gamma > 1)
+  Vec3 x = ray.src + ray.dir * t;
+  Vec3 bc = this->c - this->b;
+  if (normal * cross (ab, x - this->a) < 0 ||
+      normal * cross (bc, x - this->b) < 0 ||
+      normal * cross (-ac, x - this->c) < 0)
     return false;
 
-  out.pos = this->a + ax;
+  out.pos = x;
   out.normal = normal;
   thit = t;
   return true;
