@@ -1,3 +1,4 @@
+#include <cmath>
 #include <stdio.h>
 #include <string.h>
 #include "film.h"
@@ -5,15 +6,17 @@
 
 typedef unsigned char uint8;
 
+#define clampf(x, min, max) (fminf (max, fmaxf (min, x)))
+
 uint8* Film::imagebuffer (void) const {
   uint8* buffer = new uint8[this->width * this->height * 3];
   for (int x = 0; x < this->width; x++) {
     for (int y = 0; y < this->height; y++) {
       size_t offset = (y * this->width + x) * 3;
       Vec3 pixel = this->pixels[x][y];
-      buffer[offset] = (uint8) (pixel.x * 255);
-      buffer[offset+1] = (uint8) (pixel.y * 255);
-      buffer[offset+2] = (uint8) (pixel.z * 255);
+      buffer[offset] = (uint8) (clampf (pixel.x, 0, 1) * 255);
+      buffer[offset+1] = (uint8) (clampf (pixel.y, 0, 1) * 255);
+      buffer[offset+2] = (uint8) (clampf (pixel.z, 0, 1) * 255);
     }
   }
   return buffer;
