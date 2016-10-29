@@ -45,19 +45,21 @@ void Scene::readFile (const char* filename) {
   if (file.is_open ()) {
     while (getline (file, line)) {
       vector<string> tokens = split (line, delims);
-      if (tokens[0] == "v") {
-        points.push_back (Vec3 (
-          stof (tokens[1]),
-          stof (tokens[2]),
-          stof (tokens[3])));
-      } else if (tokens[0] == "f") {
-        // TODO: memory leak :))))
-        Triangle* t = new Triangle (
-          points[stoi (tokens[1]) - 1],
-          points[stoi (tokens[2]) - 1],
-          points[stoi (tokens[3]) - 1]);
-        t->material = Material::matte ();
-        this->raytracer.addPrimitive (t);
+      if (!tokens.empty ()) {
+        if (tokens[0] == "v") {
+          points.push_back (Vec3 (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3])));
+        } else if (tokens[0] == "f") {
+          // TODO: memory leak :))))
+          Triangle* t = new Triangle (
+            points[stoi (tokens[1]) - 1],
+            points[stoi (tokens[2]) - 1],
+            points[stoi (tokens[3]) - 1]);
+          t->material = Material::matte ();
+          this->raytracer.addPrimitive (t);
+        }
       }
     }
     file.close();
