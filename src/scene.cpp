@@ -2,8 +2,9 @@
 #include <string>
 #include <vector>
 #include "material.h"
-#include "scene.h"
 #include "sample.h"
+#include "scene.h"
+#include "sphere.h"
 #include "triangle.h"
 
 using namespace std;
@@ -42,6 +43,8 @@ void Scene::readFile (const char* filename) {
   string delims (" \t");
   string line;
   vector<Vec3> points;
+  vector<Vec3> colors;
+  vector<Material> materials;
   if (file.is_open ()) {
     while (getline (file, line)) {
       vector<string> tokens = split (line, delims);
@@ -57,8 +60,52 @@ void Scene::readFile (const char* filename) {
             points[stoi (tokens[1]) - 1],
             points[stoi (tokens[2]) - 1],
             points[stoi (tokens[3]) - 1]);
-          t->material = Material::matte ();
+          if (tokens.size () > 4)
+            t->material = materials[stoi (tokens[4]) - 1];
+          else
+            t->material = Material::matte ();
           this->raytracer.addPrimitive (t);
+        } else if (tokens[0] == "s") {
+          Sphere* s = new Sphere (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3]),
+            stof (tokens[4]));
+          if (tokens.size () > 5)
+            s->material = materials[stoi (tokens[5]) - 1];
+          else
+            s->material = Material::matte ();
+          this->raytracer.addPrimitive (s);
+        } else if (tokens[0] == "c") {
+          colors.push_back (Vec3 (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3])));
+        } else if (tokens[0] == "m") {
+          Material mat;
+          mat.ka = colors[stoi (tokens[1]) - 1];
+          mat.kd = colors[stoi (tokens[2]) - 1];
+          mat.ks = colors[stoi (tokens[3]) - 1];
+          mat.kr = stof (tokens[4]);
+          mat.spu = stof (tokens[5]);
+          mat.spv = stof (tokens[6]);
+          materials.push_back (mat);
+        } else if (tokens[0] == "dl") {
+          DirectionalLight* dl = new DirectionalLight ();
+          dl->xyz = Vec3 (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3]));
+          dl->rgb = colors[stoi (tokens[4]) - 1];
+          this->raytracer.addLight (dl);
+        } else if (tokens[0] == "pl") {
+          PointLight* pl = new PointLight ();
+          pl->xyz = Vec3 (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3]));
+          pl->rgb = colors[stoi (tokens[4]) - 1];
+          this->raytracer.addLight (pl);
         }
       }
     }
