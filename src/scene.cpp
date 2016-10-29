@@ -5,6 +5,7 @@
 #include "sample.h"
 #include "scene.h"
 #include "sphere.h"
+#include "transform.h"
 #include "triangle.h"
 
 using namespace std;
@@ -45,6 +46,7 @@ void Scene::readFile (const char* filename) {
   vector<Vec3> points;
   vector<Vec3> colors;
   vector<Material> materials;
+  vector<Primitive*> primitives;
   if (file.is_open ()) {
     while (getline (file, line)) {
       vector<string> tokens = split (line, delims);
@@ -64,7 +66,7 @@ void Scene::readFile (const char* filename) {
             t->material = materials[stoi (tokens[4]) - 1];
           else
             t->material = Material::matte ();
-          this->raytracer.addPrimitive (t);
+          primitives.push_back (t);
         } else if (tokens[0] == "s") {
           Sphere* s = new Sphere (
             stof (tokens[1]),
@@ -75,7 +77,7 @@ void Scene::readFile (const char* filename) {
             s->material = materials[stoi (tokens[5]) - 1];
           else
             s->material = Material::matte ();
-          this->raytracer.addPrimitive (s);
+          primitives.push_back (s);
         } else if (tokens[0] == "c") {
           colors.push_back (Vec3 (
             stof (tokens[1]),
@@ -106,10 +108,33 @@ void Scene::readFile (const char* filename) {
             stof (tokens[3]));
           pl->rgb = colors[stoi (tokens[4]) - 1];
           this->raytracer.addLight (pl);
+        } else if (tokens[0] == "tr") {
+          Primitive* p = primitives[stoi (tokens[4]) - 1];
+          p->transform (Transform::rotation (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3])));
+        } else if (tokens[0] == "ts") {
+          Primitive* p = primitives[stoi (tokens[4]) - 1];
+          p->transform (Transform::scale (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3])));
+        } else if (tokens[0] == "tt") {
+          Primitive* p = primitives[stoi (tokens[4]) - 1];
+          p->transform (Transform::translation (
+            stof (tokens[1]),
+            stof (tokens[2]),
+            stof (tokens[3])));
         }
       }
     }
     file.close();
+  }
+  for (vector<Primitive*>::iterator it = primitives.begin ();
+       it != primitives.end ();
+       it++) {
+    this->raytracer.addPrimitive (*it);
   }
 };
 
