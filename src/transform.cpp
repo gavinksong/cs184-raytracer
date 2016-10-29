@@ -1,5 +1,7 @@
-#include <math.h>
+#include <cmath>
 #include "transform.h"
+
+#define DEG_TO_RAD 0.01745329251
 
 Transform::Transform (void) {
   this->x.assign (1, 0, 0);
@@ -21,6 +23,31 @@ Transform Transform::translation (float x, float y, float z) {
   temp.f.assign (x, y, z);
   return temp;
 };
+
+Transform Transform::rotation (float x, float y, float z) {
+  Transform rotX;
+  float cosx = cos (x * DEG_TO_RAD);
+  float sinx = sin (x * DEG_TO_RAD);
+  rotX.x = Vec3 (1, 0, 0);
+  rotX.y = Vec3 (0, cosx, sinx);
+  rotX.z = Vec3 (0, -sinx, cosx);
+
+  Transform rotY;
+  float cosy = cos (y * DEG_TO_RAD);
+  float siny = sin (y * DEG_TO_RAD);
+  rotY.x = Vec3 (cosy, 0, -siny);
+  rotY.y = Vec3 (0, 1, 0);
+  rotY.z = Vec3 (siny, 0, cosy);
+
+  Transform rotZ;
+  float cosz = cos (z * DEG_TO_RAD);
+  float sinz = sin (z * DEG_TO_RAD);
+  rotZ.x = Vec3 (cosz, sinz, 0);
+  rotZ.y = Vec3 (-sinz, cosz, 0);
+  rotZ.z = Vec3 (0, 0, 1);
+
+  return rotX * rotY * rotZ;
+}
 
 Transform Transform::operator * (const Transform& t) const {
   Transform linear = this->linear ();
