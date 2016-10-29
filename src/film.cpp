@@ -83,7 +83,7 @@ void Film::writeToJPEG (const char* filename) const {
     jpeg_write_scanlines(&cinfo, row_pointer, 1);
   }
 
-  delete image_buffer;
+  delete [] image_buffer;
   jpeg_finish_compress(&cinfo);
   fclose(outfile);
   jpeg_destroy_compress(&cinfo);
