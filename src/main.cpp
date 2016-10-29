@@ -12,8 +12,10 @@
 #include "camera.h"
 #include "film.h"
 #include "light.h"
+#include "material.h"
 #include "scene.h"
 #include "sphere.h"
+#include "triangle.h"
 #include "vec3.h"
 
 #ifdef _WIN32
@@ -36,7 +38,7 @@ using namespace std;
 //****************************************************
 GLfloat translation[3] = {0.0f, 0.0f, 0.0f};
 bool auto_strech = false;
-Camera camera (400, 400);
+Camera camera (700, 500);
 Scene scene (&camera);
 
 //****************************************************
@@ -94,7 +96,7 @@ void drawScene(void)
             rgb.x = clampf (rgb.x, 0, 1);
             rgb.y = clampf (rgb.y, 0, 1);
             rgb.z = clampf (rgb.z, 0, 1);
-            setPixel(i, j, rgb.x, rgb.y, rgb.z);
+            setPixel(i, camera.height - 1 - j, rgb.x, rgb.y, rgb.z);
         }
     }
 
@@ -179,41 +181,15 @@ int main(int argc, char *argv[]) {
     glfwSetKeyCallback(window, key_callback);
 
     // Set up the scene
-    Sphere sphere1 (0, 0, -5, 2);
-    sphere1.material.ka.assign (.1, .1, .1);
-    sphere1.material.kd.assign (.5, .5, .5);
-    sphere1.material.ks.assign (.5, .5, .5);
-    sphere1.material.kr = 0.5;
-    sphere1.material.spu = 500;
-    sphere1.material.spv = 500;
-    scene.addPrimitive (&sphere1);
+    if (argc > 1) {
+        scene.readFile (argv[1]);
+        Film film = scene.render ();
+        if (argc > 2)
+            film.writeToJPEG (argv[2]);
+        else
+            film.writeToJPEG ("output.jpg");
+    }
 
-    Sphere sphere2 (-1, -1, -3, .5);
-    sphere2.material.ka.assign (0, .1, 0);
-    sphere2.material.kd.assign (.3, .6, .3);
-    sphere2.material.ks.assign (.8, .8, .8);
-    sphere2.material.spu = 500;
-    sphere2.material.spv = 500;
-    scene.addPrimitive (&sphere2);
-
-    Sphere sphere3 (1, -1, -2, .3);
-    sphere3.material.ka.assign (0, 0, .1);
-    sphere3.material.kd.assign (.3, .3, .6);
-    sphere3.material.ks.assign (.3, .3, .6);
-    sphere3.material.spu = 500;
-    sphere3.material.spv = 500;
-    scene.addPrimitive (&sphere3);
-
-    DirectionalLight light1;
-    light1.xyz.assign (1, 1, -1);
-    light1.rgb.assign (1, 1, 1);
-    scene.addLight (&light1);
-
-    PointLight light2;
-    light2.xyz.assign (1, 1, 0);
-    light2.rgb.assign (1, .2, .5);
-    scene.addLight (&light2);
-    
     while( !glfwWindowShouldClose( window ) ) // infinite loop to draw object again and again
     {   // because once object is draw then window is terminated
         display( window );
