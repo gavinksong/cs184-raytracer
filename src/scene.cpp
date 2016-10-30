@@ -109,23 +109,41 @@ void Scene::readFile (const char* filename) {
           pl->rgb = colors[stoi (tokens[4]) - 1];
           this->raytracer.addLight (pl);
         } else if (tokens[0] == "tr") {
-          Primitive* p = primitives[stoi (tokens[4]) - 1];
-          p->transform (Transform::rotation (
+          int index = stoi (tokens[4]);
+          Transform t = Transform::rotation (
             stof (tokens[1]),
             stof (tokens[2]),
-            stof (tokens[3])));
+            stof (tokens[3]));
+          if (index == 0) {
+            this->camera->transform (t);
+          } else {
+            Primitive* p = primitives[index - 1];
+            p->transform (t);
+          }
         } else if (tokens[0] == "ts") {
-          Primitive* p = primitives[stoi (tokens[4]) - 1];
-          p->transform (Transform::scale (
+          int index = stoi (tokens[4]);
+          Transform t = Transform::scale (
             stof (tokens[1]),
             stof (tokens[2]),
-            stof (tokens[3])));
+            stof (tokens[3]));
+          if (index == 0) {
+            this->camera->transform (t);
+          } else {
+            Primitive* p = primitives[index - 1];
+            p->transform (t);
+          }
         } else if (tokens[0] == "tt") {
-          Primitive* p = primitives[stoi (tokens[4]) - 1];
-          p->transform (Transform::translation (
+          int index = stoi (tokens[4]);
+          Transform t = Transform::translation (
             stof (tokens[1]),
             stof (tokens[2]),
-            stof (tokens[3])));
+            stof (tokens[3]));
+          if (index == 0) {
+            this->camera->transform (t);
+          } else {
+            Primitive* p = primitives[index - 1];
+            p->transform (t);
+          }
         }
       }
     }

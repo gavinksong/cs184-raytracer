@@ -3,6 +3,7 @@
 
 #include "ray.h"
 #include "sample.h"
+#include "transform.h"
 #include "vec3.h"
 
 class Camera {
@@ -12,7 +13,7 @@ class Camera {
 
     Camera (int width, int height);
     Ray generateRay (const Sample&) const;
-    void autoResize (void);
+    void transform (const Transform&);
 };
 
 #endif

@@ -3,10 +3,14 @@
 #include "camera.h"
 
 Camera::Camera (int width, int height) {
+  float size = sqrt (width*width + height*height);
   this->width = width;
   this->height = height;
-  this->eye.assign (0, 0, 0);
-  this->autoResize ();
+  this->eye = Vec3 (0, 0, 0);
+  this->UL = Vec3 (-width,  height, -size);
+  this->UR = Vec3 ( width,  height, -size);
+  this->LR = Vec3 ( width, -height, -size);
+  this->LL = Vec3 (-width, -height, -size);
 };
 
 Ray Camera::generateRay (const Sample& sample) const {
@@ -20,12 +24,10 @@ Ray Camera::generateRay (const Sample& sample) const {
   return ray;
 };
 
-void Camera::autoResize (void) {
-  float width = this->width;
-  float height = this->height;
-  float size = sqrt (width*width + height*height);
-  this->UL.assign (-width,  height, -size);
-  this->UR.assign ( width,  height, -size);
-  this->LR.assign ( width, -height, -size);
-  this->LL.assign (-width, -height, -size);
+void Camera::transform (const Transform& t) {
+  this->eye = t * this->eye;
+  this->UL = t * this->UL;
+  this->UR = t * this->UR;
+  this->LR = t * this->LR;
+  this->LL = t * this->LL;
 };
