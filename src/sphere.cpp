@@ -26,7 +26,7 @@ bool Sphere::intersect (const Ray& ray, float& thit, LocalGeo& out) const {
 
   Vec3 v = src + t * dir;
   out.pos = this->transmat * v;
-  out.normal = normalize (this->transmat.linear () * v);
+  out.normal = normalize (inv.linearT () * v);
   thit = t;
   return true;
 };

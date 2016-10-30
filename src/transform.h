@@ -20,6 +20,7 @@ class Transform {
 
     Transform inverse (void) const;
     Transform linear (void) const;
+    Transform linearT (void) const;
 
     friend std::ostream& operator << (std::ostream&, const Transform&);
 };

@@ -100,6 +100,18 @@ Transform Transform::linear (void) const {
   return temp;
 }
 
+Transform Transform::linearT (void) const {
+  Vec3 x = this->x;
+  Vec3 y = this->y;
+  Vec3 z = this->z;
+
+  Transform temp;
+  temp.x = Vec3 (x.x, y.x, z.x);
+  temp.y = Vec3 (y.x, y.y, z.y);
+  temp.z = Vec3 (x.z, y.z, z.z);
+  return temp;
+}
+
 std::ostream& operator << (std::ostream& out, const Transform& t) {
   out << "(" << t.x << "\n " << t.y << "\n " << t.z << "\n " << t.f << ")";
   return out;
